@@ -11,7 +11,7 @@
     @foreach($authors as $author)
         <tr>
             <td>{!! $author->name !!}</td>
-            <td>{!! $author->bio !!}</td>
+            <td>{!! substr($author->bio, 0, 350) !!}</td>
             <td><img src="{!! $author->image !!}" class="img-responsive" width="150" height="150"></td>
             <td>
                 {!! Form::open(['route' => ['authors.destroy', $author->id], 'method' => 'delete']) !!}
@@ -26,3 +26,4 @@
     @endforeach
     </tbody>
 </table>
+{{ $authors->links() }}
