@@ -8,6 +8,7 @@ use App\Repositories\AuthorRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Support\Facades\Storage;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
@@ -58,6 +59,16 @@ class AuthorController extends AppBaseController
         $input = $request->all();
 
         $author = $this->authorRepository->create($input);
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            // $nameFile = $file->getClientOriginalName();
+            // $extension = $file->extension();
+            $route = Storage::url($file->store('public/Img/Authors'));
+            $author->fill([
+                'image' => $route
+            ])->save();
+        }
 
         Flash::success('Author saved successfully.');
 
