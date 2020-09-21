@@ -33,7 +33,7 @@ class AuthorController extends AppBaseController
     {
         $this->authorRepository->pushCriteria(new RequestCriteria($request));
         $authors = $this->authorRepository->all();
-        $authors = Author::orderBy('id', 'DESC')->paginate(3);
+        $authors = Author::orderBy('id', 'DESC')->paginate(4);
 
         return view('authors.index')
             ->with('authors', $authors);
@@ -136,6 +136,16 @@ class AuthorController extends AppBaseController
         }
 
         $author = $this->authorRepository->update($request->all(), $id);
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            // $nameFile = $file->getClientOriginalName();
+            // $extension = $file->extension();
+            $route = Storage::url($file->store('public/Img/Authors'));
+            $author->fill([
+                'image' => $route
+            ])->save();
+        }
 
         Flash::success('Author updated successfully.');
 
