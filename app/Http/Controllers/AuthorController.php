@@ -21,6 +21,7 @@ class AuthorController extends AppBaseController
     public function __construct(AuthorRepository $authorRepo)
     {
         $this->authorRepository = $authorRepo;
+        $this->middleware('auth');
     }
 
     /**
