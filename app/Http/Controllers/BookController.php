@@ -22,6 +22,7 @@ class BookController extends AppBaseController
     public function __construct(BookRepository $bookRepo)
     {
         $this->bookRepository = $bookRepo;
+        $this->middleware('auth');
     }
 
     /**
