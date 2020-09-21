@@ -6,8 +6,10 @@ use App\Http\Requests\CreateAuthorRequest;
 use App\Http\Requests\UpdateAuthorRequest;
 use App\Repositories\AuthorRepository;
 use App\Http\Controllers\AppBaseController;
+use App\Models\Author;
 use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Support\Facades\Storage;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
@@ -31,6 +33,7 @@ class AuthorController extends AppBaseController
     {
         $this->authorRepository->pushCriteria(new RequestCriteria($request));
         $authors = $this->authorRepository->all();
+        $authors = Author::orderBy('id', 'DESC')->paginate(3);
 
         return view('authors.index')
             ->with('authors', $authors);
@@ -58,6 +61,16 @@ class AuthorController extends AppBaseController
         $input = $request->all();
 
         $author = $this->authorRepository->create($input);
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            // $nameFile = $file->getClientOriginalName();
+            // $extension = $file->extension();
+            $route = Storage::url($file->store('public/Img/Authors'));
+            $author->fill([
+                'image' => $route
+            ])->save();
+        }
 
         Flash::success('Author saved successfully.');
 
