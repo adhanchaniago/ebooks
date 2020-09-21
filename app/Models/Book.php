@@ -29,7 +29,7 @@ class Book extends Model
         'title',
         'review',
         'cover',
-        'autho_id'
+        'author_id'
     ];
 
     /**
@@ -41,7 +41,7 @@ class Book extends Model
         'title' => 'string',
         'review' => 'string',
         'cover' => 'string',
-        'autho_id' => 'integer'
+        'author_id' => 'integer'
     ];
 
     /**
@@ -51,8 +51,12 @@ class Book extends Model
      */
     public static $rules = [
         'title' => 'required',
-        'review' => 'required|max:255'
+        'review' => 'required'
     ];
 
-    
+    public function author()
+    {
+        return $this->belongsTo(Author::class, 'author_id', 'id');
+    }
+
 }

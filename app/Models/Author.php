@@ -51,5 +51,9 @@ class Author extends Model
         'bio' => 'required'
     ];
 
-    
+    public function books()
+    {
+        return $this->hasMany(Book::class);
+    }
+
 }
