@@ -6,8 +6,11 @@ use App\Http\Requests\CreateBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use App\Repositories\BookRepository;
 use App\Http\Controllers\AppBaseController;
+use App\Models\Author;
+use App\Models\Book;
 use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Support\Facades\Storage;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
@@ -43,7 +46,8 @@ class BookController extends AppBaseController
      */
     public function create()
     {
-        return view('books.create');
+        $authors = Author::pluck('name', 'id');
+        return view('books.create', compact('authors'));
     }
 
     /**
@@ -58,6 +62,16 @@ class BookController extends AppBaseController
         $input = $request->all();
 
         $book = $this->bookRepository->create($input);
+
+        if ($request->hasFile('cover')) {
+            $file = $request->file('cover');
+            // $nameFile = $file->getClientOriginalName();
+            // $extension = $file->extension();
+            $route = Storage::url($file->store('public/Img/Books'));
+            $book->fill([
+                'cover' => $route
+            ])->save();
+        }
 
         Flash::success('Book saved successfully.');
 
@@ -94,6 +108,7 @@ class BookController extends AppBaseController
     public function edit($id)
     {
         $book = $this->bookRepository->findWithoutFail($id);
+        $authors = Author::pluck('name', 'id');
 
         if (empty($book)) {
             Flash::error('Book not found');
@@ -101,7 +116,7 @@ class BookController extends AppBaseController
             return redirect(route('books.index'));
         }
 
-        return view('books.edit')->with('book', $book);
+        return view('books.edit', compact('book', 'authors'));
     }
 
     /**
@@ -123,6 +138,16 @@ class BookController extends AppBaseController
         }
 
         $book = $this->bookRepository->update($request->all(), $id);
+
+        if ($request->hasFile('cover')) {
+            $file = $request->file('cover');
+            // $nameFile = $file->getClientOriginalName();
+            // $extension = $file->extension();
+            $route = Storage::url($file->store('public/Img/Books'));
+            $book->fill([
+                'cover' => $route
+            ])->save();
+        }
 
         Flash::success('Book updated successfully.');
 

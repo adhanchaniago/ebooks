@@ -13,8 +13,8 @@
         <tr>
             <td>{!! $book->title !!}</td>
             <td>{!! $book->review !!}</td>
-            <td>{!! $book->cover !!}</td>
-            <td>{!! $book->autho_id !!}</td>
+            <td><img src="{!! $book->cover !!}" class="img-responsive" width="150" height="150"></td>
+            <td>{!! $book->author->name !!}</td>
             <td>
                 {!! Form::open(['route' => ['books.destroy', $book->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
