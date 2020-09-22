@@ -6,3 +6,7 @@
     <a href="{!! route('books.index') !!}"><i class="fa fa-edit"></i><span>Books</span></a>
 </li>
 
+<li class="{{ Request::is('prestamos*') ? 'active' : '' }}">
+    <a href="{!! route('prestamos.index') !!}"><i class="fa fa-edit"></i><span>Prestamos</span></a>
+</li>
+

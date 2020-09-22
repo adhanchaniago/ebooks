@@ -24,3 +24,5 @@ Route::get('/home', 'HomeController@index');
 Route::resource('authors', 'AuthorController');
 
 Route::resource('books', 'BookController');
+
+Route::resource('prestamos', 'PrestamoController');

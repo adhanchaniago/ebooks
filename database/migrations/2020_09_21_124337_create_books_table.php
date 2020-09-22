@@ -18,6 +18,8 @@ class CreateBooksTable extends Migration
             $table->string('title');
             $table->text('review');
             $table->string('cover');
+            $table->integer('units');
+            $table->integer('qualification');
             $table->integer('author_id')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();

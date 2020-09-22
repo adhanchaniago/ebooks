@@ -59,4 +59,9 @@ class Book extends Model
         return $this->belongsTo(Author::class, 'author_id', 'id');
     }
 
+    public function prestamos()
+    {
+        return $this->hasMany(Prestamo::class);
+    }
+
 }
